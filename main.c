@@ -1,6 +1,22 @@
 #include <stdio.h>
 #include <stdint.h>
 
+// White pieces
+uint64_t whitePawns = 0ULL;
+uint64_t whiteBishops = 0ULL;
+uint64_t whiteKnights = 0ULL;
+uint64_t whiteRooks = 0ULL;
+uint64_t whiteQueen = 0ULL;
+uint64_t whiteKing = 0ULL;
+
+// Black pieces
+uint64_t blackPawns = 0ULL;
+uint64_t blackBishops = 0ULL;
+uint64_t blackKnights = 0ULL;
+uint64_t blackRooks = 0ULL;
+uint64_t blackQueen = 0ULL;
+uint64_t blackKing = 0ULL;
+
 void printBinary(uint64_t n) {
   for (int i = 63; i >= 0; i--) {
     printf("%lu", (n >> i) & 1);
@@ -11,11 +27,7 @@ void printBinary(uint64_t n) {
   printf("\n");
 }
 
-void printBoard(
-  uint64_t whitePawns, uint64_t whiteBishops, uint64_t whiteKnights, uint64_t whiteRooks, uint64_t whiteQueen, uint64_t whiteKing,
-  uint64_t blackPawns, uint64_t blackBishops, uint64_t blackKnights, uint64_t blackRooks, uint64_t blackQueen, uint64_t blackKing
-) {
-
+void printBoard() {
   for (int y = 7; y >= 0; y--) {
     for (int x = 0; x <= 7; x++) {
       int bit = (8 * y) + x;
@@ -47,23 +59,6 @@ void printBoard(
 
 int main() {
   uint64_t board = 0ULL;
-
-  // White pieces
-  uint64_t whitePawns = 0ULL;
-  uint64_t whiteBishops = 0ULL;
-  uint64_t whiteKnights = 0ULL;
-  uint64_t whiteRooks = 0ULL;
-  uint64_t whiteQueen = 0ULL;
-  uint64_t whiteKing = 0ULL;
-
-  // Black pieces
-  uint64_t blackPawns = 0ULL;
-  uint64_t blackBishops = 0ULL;
-  uint64_t blackKnights = 0ULL;
-  uint64_t blackRooks = 0ULL;
-  uint64_t blackQueen = 0ULL;
-  uint64_t blackKing = 0ULL;
-
 
   // Setup white pieces position
 
@@ -122,10 +117,7 @@ int main() {
 
   printBinary(board);
 
-  printBoard(
-    whitePawns, whiteBishops, whiteKnights, whiteRooks, whiteQueen, whiteKing,
-    blackPawns, blackBishops, blackKnights, blackRooks, blackQueen, blackKing
-  );
+  printBoard();
   
   return 0;
 }
