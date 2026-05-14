@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+uint64_t board = 0ULL;
+
 // White pieces
 uint64_t whitePawns = 0ULL;
 uint64_t whiteBishops = 0ULL;
@@ -58,8 +60,6 @@ void printBoard() {
 }
 
 int main() {
-  uint64_t board = 0ULL;
-
   // Setup white pieces position
 
   // White setup
