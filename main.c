@@ -17,6 +17,8 @@ uint64_t whiteRooks = 0ULL;
 uint64_t whiteQueen = 0ULL;
 uint64_t whiteKing = 0ULL;
 
+uint64_t whitePieces = 0ULL;
+
 // Black pieces
 uint64_t blackPawns = 0ULL;
 uint64_t blackBishops = 0ULL;
@@ -24,6 +26,8 @@ uint64_t blackKnights = 0ULL;
 uint64_t blackRooks = 0ULL;
 uint64_t blackQueen = 0ULL;
 uint64_t blackKing = 0ULL;
+
+uint64_t blackPieces = 0ULL;
 
 void printBinary(uint64_t n) {
   for (int i = 63; i >= 0; i--) {
@@ -81,7 +85,65 @@ uint64_t knightMoves(uint64_t knights) {
   moves |= ((knights << 10) & notABFile) | ((knights >> 6) & notABFile);
 
   // Remove bit that has piece already
-  moves &= ~board;
+  moves &= ~whitePieces;
+
+  return moves;
+}
+
+uint64_t whitePawnMoves(uint64_t pawns) {
+  uint64_t moves = 0ULL;
+
+  // Normal move logic
+  uint64_t singleStep = (pawns << 8);
+
+  singleStep &= ~board;
+
+  moves |= singleStep;
+
+  uint64_t doubleStep = singleStep & 0x0000000000FF0000ULL;
+
+  doubleStep = (doubleStep << 8);
+
+  doubleStep &= ~board;
+
+  moves |= doubleStep;
+
+  // Kill move logic
+
+  // Left 1 top 1
+  moves |= ((pawns << 7) & blackPieces) & notHFile;
+
+  // Right 1 top 1
+  moves |= ((pawns << 9) & blackPieces) & notAFile;
+
+  return moves;
+}
+
+uint64_t blackPawnMoves(uint64_t pawns) {
+  uint64_t moves = 0ULL;
+
+  // Normal move logic
+  uint64_t singleStep = (pawns >> 8);
+
+  singleStep &= ~board;
+
+  moves |= singleStep;
+
+  uint64_t doubleStep = singleStep & 0x0000FF0000000000ULL;
+
+  doubleStep = doubleStep >> 8;
+
+  doubleStep &= ~board;
+
+  moves |= doubleStep;
+
+  // Kill move logic
+
+  // Left 1 down 1
+  moves |= ((pawns >> 9) & whitePieces) & notHFile;
+
+  // Right 1 down 1
+  moves |= ((pawns >> 7) & whitePieces) & notAFile;
 
   return moves;
 }
@@ -113,6 +175,8 @@ int main() {
 
   whiteKing |= (1ULL << 4);
 
+  whitePieces = whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueen | whiteKing;
+
   // Black setup
 
   blackPawns |= (1ULL << 48);
@@ -137,14 +201,16 @@ int main() {
 
   blackKing |= (1ULL << 60);
 
+  blackPieces |= blackPawns | blackBishops | blackKnights | blackRooks | blackQueen | blackKing;
+
 
   // Bind every pieces
   board |= whitePawns | whiteBishops | whiteKnights | whiteRooks | whiteQueen | whiteKing | 
            blackPawns | blackBishops | blackKnights | blackRooks | blackQueen | blackKing ;
 
-  printBinary(board);
+  printBinary(whitePawnMoves(whitePawns));
 
-  printBinary(knight_moves(whiteKnights));
+  printBinary(blackPawnMoves(blackPawns));
 
   printBoard();
   
