@@ -3,6 +3,12 @@
 
 uint64_t board = 0ULL;
 
+uint64_t notAFile = 0xFEFEFEFEFEFEFEFE;
+uint64_t notHFile = 0x7F7F7F7F7F7F7F7F;
+
+uint64_t notABFile = 0xFCFCFCFCFCFCFCFC;
+uint64_t notGHFile = 0x3F3F3F3F3F3F3F3F;
+
 // White pieces
 uint64_t whitePawns = 0ULL;
 uint64_t whiteBishops = 0ULL;
@@ -57,6 +63,27 @@ void printBoard() {
     printf("\n\n");
   }
   printf("    a  b  c  d  e  f  g  h \n");
+}
+
+uint64_t knight_moves(uint64_t knights) {
+  uint64_t moves = 0ULL;
+
+  // Move up 2 left/right 1
+  moves |= ((knights << 15) & notHFile) | ((knights << 17) & notAFile);
+ 
+  // Move down 2 left/right 1
+  moves |= ((knights >> 15) & notAFile) | ((knights >> 17) & notHFile);
+
+  // Move left 2 up/down 1
+  moves |= ((knights << 6) & notGHFile) | ((knights >> 10) & notGHFile);
+
+  // Move right 2 up/down 1
+  moves |= ((knights << 10) & notABFile) | ((knights >> 6) & notABFile);
+
+  // Remove bit that has piece already
+  moves &= ~board;
+
+  return moves;
 }
 
 int main() {
@@ -116,6 +143,8 @@ int main() {
            blackPawns | blackBishops | blackKnights | blackRooks | blackQueen | blackKing ;
 
   printBinary(board);
+
+  printBinary(knight_moves(whiteKnights));
 
   printBoard();
   
