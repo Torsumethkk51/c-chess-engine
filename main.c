@@ -65,7 +65,7 @@ void printBoard() {
   printf("    a  b  c  d  e  f  g  h \n");
 }
 
-uint64_t knight_moves(uint64_t knights) {
+uint64_t knightMoves(uint64_t knights) {
   uint64_t moves = 0ULL;
 
   // Move up 2 left/right 1
